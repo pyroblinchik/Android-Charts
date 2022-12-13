@@ -2,17 +2,23 @@ package com.pyroblinchik.charts
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.pyroblinchik.charts.databinding.ActivityBarChartBinding
 
 class BarChartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBarChartBinding
+    private var barEntryList: ArrayList<BarEntry>? = arrayListOf()
+    private var stringsNamesList: ArrayList<String>? = arrayListOf()
+
+    private var remarksByCategoriesList: ArrayList<RemarksByCategories>? = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +27,16 @@ class BarChartActivity : AppCompatActivity() {
         binding = ActivityBarChartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupBarChart()
+//        setupBarChart()
+//        loadBarChartData()
+//        barEntryList = arrayListOf()
+//        stringsNamesList = arrayListOf()
+        getData()
+
         loadBarChartData()
+    }
+
+    private fun getData(){
 
     }
 
@@ -38,37 +52,73 @@ class BarChartActivity : AppCompatActivity() {
 //            activityMainPiechart.dataS
 //            activityMainPiechart.isDrawSlicesUnderHoleEnabled
 
-            activityMainBarchart.getDescription().setEnabled(false)
-            val l: Legend = activityMainBarchart.getLegend()
-            l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-            l.orientation = Legend.LegendOrientation.VERTICAL
-            l.setDrawInside(false)
-            l.isEnabled = true
         }
     }
 
     private fun loadBarChartData() {
-        val entries: ArrayList<BarEntry> = ArrayList()
-        entries.add(BarEntry(0.2f, 0.2f))
-        entries.add(BarEntry(0.15f, 0.15f))
-        entries.add(BarEntry(0.10f, 0.10f))
-        entries.add(BarEntry(0.25f, 0.25f))
-        entries.add(BarEntry(0.3f, 0.3f))
+//        val entries: ArrayList<BarEntry> = ArrayList()
+//        entries.add(BarEntry("A", 5f))
+//        entries.add(BarEntry("B", 47f))
+//        entries.add(BarEntry("C", 12f))
+//        entries.add(BarEntry("D", 11f))
+//        entries.add(BarEntry("E", 34))
+        remarksByCategoriesList?.add(RemarksByCategories(0,"Пусто",600))
+        remarksByCategoriesList?.add(RemarksByCategories(1,"A",100))
+        remarksByCategoriesList?.add(RemarksByCategories(2,"B",300))
+        remarksByCategoriesList?.add(RemarksByCategories(3,"C",500))
+        remarksByCategoriesList?.add(RemarksByCategories(4,"D",200))
+        remarksByCategoriesList?.add(RemarksByCategories(5,"E",600))
+        remarksByCategoriesList?.add(RemarksByCategories(6,"F",100))
+        remarksByCategoriesList?.add(RemarksByCategories(7,"G",300))
+        remarksByCategoriesList?.add(RemarksByCategories(8,"X",500))
+        remarksByCategoriesList?.add(RemarksByCategories(9,"Y",200))
+        remarksByCategoriesList?.add(RemarksByCategories(10,"Z",600))
+        remarksByCategoriesList?.add(RemarksByCategories(11,"Q",100))
+        remarksByCategoriesList?.add(RemarksByCategories(12,"R",300))
+        remarksByCategoriesList?.add(RemarksByCategories(13,"T",500))
+        remarksByCategoriesList?.add(RemarksByCategories(14,"U",200))
+
+
+        remarksByCategoriesList?.forEach {
+            stringsNamesList?.add(it.categoryName!!)
+            barEntryList?.add(BarEntry(it.id.toFloat(),it.remarksCount!!.toFloat()))
+        }
+        val colorsTemplate = intArrayOf(
+            Color.rgb(74, 160, 150), Color.rgb(74, 160, 150), Color.rgb(74, 160, 150),
+            Color.rgb(74, 160, 150), Color.rgb(74, 160, 150)
+        )
         val colors: ArrayList<Int> = ArrayList()
-        for (color in ColorTemplate.MATERIAL_COLORS) {
+        for (color in colorsTemplate) {
             colors.add(color)
         }
-        for (color in ColorTemplate.MATERIAL_COLORS) {
-            colors.add(color)
-        }
-        val dataSet = BarDataSet(entries, "Expense Category")
+        val dataSet = BarDataSet(barEntryList, "Колличество по категориям")
         dataSet.colors = colors
+        dataSet.barBorderWidth = 10f
+        dataSet.barBorderColor = 42222
         val data = BarData(dataSet)
-        data.setDrawValues(false)
+        data.setDrawValues(true)
         binding.activityMainBarchart.setData(data)
+
+        val xAxis = binding.activityMainBarchart.getXAxis()
+        xAxis.valueFormatter = IndexAxisValueFormatter(stringsNamesList)
+        xAxis.position = (XAxis.XAxisPosition.BOTTOM)
+        xAxis.setDrawGridLines(false)
+        xAxis.setDrawAxisLine(false)
+        xAxis.granularity = 1f
+        xAxis.labelCount = stringsNamesList!!.size
+        xAxis.labelRotationAngle = 360f
+
+        binding.activityMainBarchart.legend.isEnabled = false
+        binding.activityMainBarchart.description.isEnabled = false
+        binding.activityMainBarchart.axisRight.isEnabled = false
+
+        val axisLeft = binding.activityMainBarchart.axisLeft
+
+//        axisLeft.axisDependency
+//        binding.activityMainBarchart.setScaleEnabled(false)
+
+        binding.activityMainBarchart.animateY(1000)
         binding.activityMainBarchart.invalidate()
-        binding.activityMainBarchart.animateY(5000)
     }
 
     companion object {

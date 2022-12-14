@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -12,6 +13,8 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.pyroblinchik.charts.databinding.ActivityBarChartBinding
+import kotlin.math.ceil
+import kotlin.math.floor
 
 class BarChartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBarChartBinding
@@ -36,12 +39,12 @@ class BarChartActivity : AppCompatActivity() {
         loadBarChartData()
     }
 
-    private fun getData(){
+    private fun getData() {
 
     }
 
     private fun setupBarChart() {
-        with(binding){
+        with(binding) {
 //            activityMainBarchart.isDrawHoleEnabled = true
 //            activityMainBarchart.setDrawEntryLabels(false)
 //            activityMainBarchart.setDrawSlicesUnderHole(false)
@@ -77,11 +80,37 @@ class BarChartActivity : AppCompatActivity() {
         remarksByCategoriesList?.add(RemarksByCategories(12,"R",300))
         remarksByCategoriesList?.add(RemarksByCategories(13,"T",500))
         remarksByCategoriesList?.add(RemarksByCategories(14,"U",200))
+        remarksByCategoriesList?.add(RemarksByCategories(15,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(16,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(17,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(18,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(19,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(20,"Z",800))
+        remarksByCategoriesList?.add(RemarksByCategories(21,"Q",100))
+        remarksByCategoriesList?.add(RemarksByCategories(22,"R",300))
+        remarksByCategoriesList?.add(RemarksByCategories(23,"T",500))
+        remarksByCategoriesList?.add(RemarksByCategories(24,"U",200))
+        remarksByCategoriesList?.add(RemarksByCategories(25,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(26,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(27,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(28,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(29,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(30,"Z",600))
+        remarksByCategoriesList?.add(RemarksByCategories(31,"Q",100))
+        remarksByCategoriesList?.add(RemarksByCategories(32,"R",300))
+        remarksByCategoriesList?.add(RemarksByCategories(33,"T",500))
+        remarksByCategoriesList?.add(RemarksByCategories(34,"U",100))
+        remarksByCategoriesList?.add(RemarksByCategories(35,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(36,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(37,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(38,"V",200))
+        remarksByCategoriesList?.add(RemarksByCategories(39,"V",2000))
 
 
         remarksByCategoriesList?.forEach {
             stringsNamesList?.add(it.categoryName!!)
-            barEntryList?.add(BarEntry(it.id.toFloat(),it.remarksCount!!.toFloat()))
+            val entry = BarEntry(it.id.toFloat(), it.remarksCount!!.toFloat())
+            barEntryList?.add(entry)
         }
         val colorsTemplate = intArrayOf(
             Color.rgb(74, 160, 150), Color.rgb(74, 160, 150), Color.rgb(74, 160, 150),
@@ -93,11 +122,11 @@ class BarChartActivity : AppCompatActivity() {
         }
         val dataSet = BarDataSet(barEntryList, "Колличество по категориям")
         dataSet.colors = colors
-        dataSet.barBorderWidth = 10f
-        dataSet.barBorderColor = 42222
         val data = BarData(dataSet)
+        data.barWidth = 0.5f
         data.setDrawValues(true)
         binding.activityMainBarchart.setData(data)
+        binding.activityMainBarchart.setAutoScaleMinMaxEnabled(true)
 
         val xAxis = binding.activityMainBarchart.getXAxis()
         xAxis.valueFormatter = IndexAxisValueFormatter(stringsNamesList)
@@ -107,15 +136,14 @@ class BarChartActivity : AppCompatActivity() {
         xAxis.granularity = 1f
         xAxis.labelCount = stringsNamesList!!.size
         xAxis.labelRotationAngle = 360f
+//        xAxis.spaceMin = 10f
+        binding.activityMainBarchart.zoom(floor(remarksByCategoriesList!!.size / 7f), 1f, 0f, 0f)
 
         binding.activityMainBarchart.legend.isEnabled = false
         binding.activityMainBarchart.description.isEnabled = false
         binding.activityMainBarchart.axisRight.isEnabled = false
 
-        val axisLeft = binding.activityMainBarchart.axisLeft
-
-//        axisLeft.axisDependency
-//        binding.activityMainBarchart.setScaleEnabled(false)
+        binding.activityMainBarchart.axisLeft.labelCount = 3
 
         binding.activityMainBarchart.animateY(1000)
         binding.activityMainBarchart.invalidate()

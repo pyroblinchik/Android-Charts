@@ -53,24 +53,18 @@ class PieChartActivity : AppCompatActivity() {
 
     private fun loadPieChartData() {
         val entries: ArrayList<PieEntry> = ArrayList()
-        entries.add(PieEntry(0.2f, "Food & Dining"))
-        entries.add(PieEntry(0.15f, "Medical"))
-        entries.add(PieEntry(0.10f, "Entertainment"))
-        entries.add(PieEntry(0.25f, "Electricity and Gas"))
-        entries.add(PieEntry(0.3f, "Housing"))
+        entries.add(PieEntry(0.2f, "Работа"))
+        entries.add(PieEntry(0.15f, "Личное"))
+        entries.add(PieEntry(0.4f, "Прочее"))
+        entries.add(PieEntry(0.05f, "Автор"))
+        entries.add(PieEntry(0.1f, "Автор"))
+        entries.add(PieEntry(0.2f, "Автор"))
+        entries.add(PieEntry(0.2f, "Автор"))
         val colors: ArrayList<Int> = ArrayList()
-        val colorsMaterial = intArrayOf(
-            ColorTemplate.rgb("#2ecc71"),
-            ColorTemplate.rgb("#f1c40f"),
-            ColorTemplate.rgb("#e74c3c"),
-            ColorTemplate.rgb("#3498db")
-        )
-        for (color in colorsMaterial) {
-            colors.add(color)
-        }
+
         val colorOfChart = intArrayOf(
-            Color.rgb(192, 155, 140), Color.rgb(245, 247, 100), Color.rgb(255, 208, 140),
-            Color.rgb(240, 134, 255), Color.rgb(255, 140, 157)
+            Color.rgb(211, 211, 211), Color.rgb(255, 147, 52), Color.rgb(50, 74, 203),
+            Color.rgb(2, 135, 59), Color.rgb(242, 201, 76),Color.rgb(240,8,8)
         )
         for (color in colorOfChart) {
             colors.add(color)
